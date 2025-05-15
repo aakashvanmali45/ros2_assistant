@@ -1,25 +1,44 @@
-from langchain_openai import ChatOpenAI
-from langchain.agents import initialize_agent
-from langchain_community.tools import Tool
+import os
+import re
 
-from assistant.ros_tools import create_node, create_package
+PACKAGE_NAME = "test_pkg"
+SRC_PATH = os.path.join(os.getcwd(), "src",PACKAGE_NAME, PACKAGE_NAME)
 
-llm = ChatOpenAI(temperature=0.2, model="gpt-4")
+user_input = input("Enter Command: ")
 
-tools = [
-    Tool(
-        name="CreateNode",
-        func=create_node,
-        description="Create a ROS 2 node. Input should be a dictionary with keys 'pkg_name' and 'node_name'."
-    ),
-    Tool(
-        name="CreatePackage",
-        func=create_package,
-        description="Create a ROS 2 package. Input should be the package name string."
-    )
-]
+match = re.search(r"make a node named (\w+)", user_input.lower())
 
-agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
+if match:
+    node_name = match.group(1)
+    node_filename = f"{node_name}.py"
+    node_path = os.path.join(SRC_PATH, node_filename)
 
-def handle_input(user_input):
-    return agent.run(user_input)
+    if not os.path.exists(node_path):
+        with open(node_path, "w") as f:
+            f.write(
+                f"""import rclpy
+from rclpy.node import Node
+
+class {node_name.capitalize()}Node(Node):
+    def __init__(self):
+        super().__init__('{node_name}')
+        self.get_logger().info('{node_name} node has been started')
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = {node_name.capitalize()}Node()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+            """)
+            print(f"Node {node_name}.py created at {node_path}")
+
+    else:
+        print(f"Node {node_name}.py already exists")
+
+else:
+    print("Could not parse node")
+
