@@ -1,0 +1,54 @@
+{
+  "test_node2.py": {
+    "filename": "test_node2.py",
+    "publisher": [
+      {
+        "topic": "alive_turtles",
+        "msg_type": "TurtleArray"
+      }
+    ],
+    "subscriber": [],
+    "clients": [
+      {
+        "Client": "Spawn",
+        "service_name": "/spawn"
+      },
+      {
+        "Client": "Kill",
+        "service_name": "/kill"
+      }
+    ],
+    "services": [
+      {
+        "service_type": "CatchTurtle",
+        "service_name": "catch_turtle"
+      }
+    ],
+    "timers": [
+      {
+        "period": "2.0"
+      }
+    ]
+  },
+  "__init__.py": {
+    "filename": "__init__.py",
+    "publisher": [],
+    "subscriber": [],
+    "clients": [],
+    "services": [],
+    "timers": []
+  },
+  "test_node.py": {
+    "filename": "test_node.py",
+    "publisher": [
+      {
+        "topic": "test",
+        "msg_type": "Int64"
+      }
+    ],
+    "subscriber": [],
+    "clients": [],
+    "services": [],
+    "timers": []
+  }
+}

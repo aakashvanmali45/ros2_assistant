@@ -3,7 +3,8 @@ import re
 
 PACKAGE_NAME = "test_pkg"
 SRC_PATH = os.path.join(os.getcwd(), "src",PACKAGE_NAME, PACKAGE_NAME)
-
+example_command= "Follow the sample command: make a node named sample_node"
+print(example_command)
 user_input = input("Enter Command: ")
 
 match = re.search(r"make a node named (\w+)", user_input.lower())
