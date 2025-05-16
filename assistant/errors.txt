@@ -1,0 +1,7 @@
+1. TypeError: 'ChatCompletion' object is not subscriptable, response["choices"][0]["message"]["content"]
+Solution: response.choices[0].message.content 
+
+2. Edge Case: if user does not add a topic name it will return null for topic name in json object. But when
+              it writes the code it will show error on execution.
+
+Potential Solution: add if empty to give error that topic name cannot be empty, must do this for all edge cases
