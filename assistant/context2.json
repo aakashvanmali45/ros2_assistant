@@ -1,0 +1,94 @@
+{
+  "test_node2.py": {
+    "filename": "test_node2.py",
+    "filepath": "/home/aakash/ros2_assistant_ws/src/test_pkg/test_pkg/test_node2.py",
+    "class_name": "TurtleSpawnerNode",
+    "functions": [
+      "main",
+      "__init__",
+      "callback_catch_turtle",
+      "publish_alive_turtles",
+      "spwan_new_turtle",
+      "call_spawn_service",
+      "callback_call_spawn_service",
+      "call_kill_service",
+      "callback_call_kill_service"
+    ],
+    "imports": [
+      "import random",
+      "import math",
+      "import rclpy",
+      "from rclpy.node import Node",
+      "from turtlesim.srv import Spawn",
+      "from functools import partial",
+      "from my_robot_interfaces.msg import Turtle",
+      "from my_robot_interfaces.msg import TurtleArray",
+      "from my_robot_interfaces.srv import CatchTurtle",
+      "from turtlesim.srv import Kill"
+    ],
+    "publishers": [
+      {
+        "topic": "alive_turtles",
+        "msg_type": "TurtleArray"
+      }
+    ],
+    "subscribers": [],
+    "clients": [
+      {
+        "client": "Spawn",
+        "service_name": "/spawn"
+      },
+      {
+        "client": "Kill",
+        "service_name": "/kill"
+      }
+    ],
+    "services": [
+      {
+        "service_type": "CatchTurtle",
+        "service_name": "catch_turtle"
+      }
+    ],
+    "timers": [
+      {
+        "period": 2.0
+      }
+    ]
+  },
+  "__init__.py": {
+    "filename": "__init__.py",
+    "filepath": "/home/aakash/ros2_assistant_ws/src/test_pkg/test_pkg/__init__.py",
+    "class_name": null,
+    "functions": [],
+    "imports": [],
+    "publishers": [],
+    "subscribers": [],
+    "clients": [],
+    "services": [],
+    "timers": []
+  },
+  "test_node.py": {
+    "filename": "test_node.py",
+    "filepath": "/home/aakash/ros2_assistant_ws/src/test_pkg/test_pkg/test_node.py",
+    "class_name": "Test_nodeNode",
+    "functions": [
+      "main",
+      "__init__"
+    ],
+    "imports": [
+      "import rclpy",
+      "from rclpy.node import Node",
+      "from example_interfaces.msg import Int64"
+    ],
+    "publishers": [
+      {
+        "topic": "test",
+        "msg_type": "Int64"
+      }
+    ],
+    "subscribers": [],
+    "clients": [],
+    "services": [],
+    "timers": []
+  }
+}
