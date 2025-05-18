@@ -1,6 +1,10 @@
-import openai
+from openai import OpenAI
+import os
 
-#openai.api_key=""
+from dotenv import load_dotenv
+
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def interpret_text(user_input):
     prompt = f"""
@@ -20,7 +24,7 @@ Output:
 Only return the JSON object. Here is the input:
 {user_input}
 """
-    response = openai.chat.completions.create(
+    response = client.chat.completions.create(
         model="chatgpt-4o-latest",
         messages=[{"role": "user", "content": prompt}],
         temperature=0
