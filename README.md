@@ -14,7 +14,7 @@ The assistant can read raw human input and convert it into actionable commands w
 - Store node structures as JSON for future context-aware code insertion.
 
 
----
+
 
 ## Tech Stack
 
@@ -23,7 +23,7 @@ The assistant can read raw human input and convert it into actionable commands w
 - **OpenAI GPT-4 API**
 - **Python 3**
 
----
+
 
 ## How to Use
 
@@ -53,6 +53,10 @@ The assistant can read raw human input and convert it into actionable commands w
 ## Contribute or Collaborate
 
 This project is under active development. If you're working on something similar or want to contribute ideas, improvements, or code—feel free to reach out or open a pull request.
+
+Made with ❤️ by a Mechatronics Engineer who loves robots and automation.
+
+
 
 ## License
 
