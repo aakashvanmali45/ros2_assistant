@@ -30,7 +30,7 @@ The assistant can read raw human input and convert it into actionable commands w
 1. **Clone the repository**
    ```bash
    git clone https://github.com/aakashvanmali45/ros2_assistant.git
-   cd ros2-assistant
+   cd ros2_assistant
 
 2. **Install Dependencies**
    ```bash
