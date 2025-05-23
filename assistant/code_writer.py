@@ -14,11 +14,37 @@ def ensure_import_exists(code, import_stmt):
     return import_stmt not in code
 
 
-def add_publisher_to_node(filepath, topic, msg_type):
+def add_publisher_to_node(filepath, topic_name, message_type):
     with open(filepath, "r") as f:
         lines = f.readlines()
 
     # Check for import and add if missing
+    import_stmt = f"from {message_type.rsplit('.', 1)[0]} import {message_type.rsplit('.', 1)[-1]}" #
+    if ensure_import_exists("".join(lines), import_stmt):
+        for i, line in enumerate(lines):
+            if line.startswith("import") or line.startswith("from"):
+                continue
+            lines.insert(i, import_stmt + "\n")
+            break
+
+
+    # Inject into __init__
+    for i, line in enumerate(lines):
+        if "def __init__(" in line and "self" in line:
+            indent = " " * (len(line) - len(line.lstrip()) + 4)
+            publisher_line = f'{indent}self.publisher_ = self.create_publisher({message_type.rsplit('.', 1)[-1]}, "{topic_name}", 10)\n'
+            if publisher_line.strip() not in "".join(lines):
+                lines.insert(i + 2, publisher_line)
+            break
+
+    with open(filepath, "w") as f:
+        f.writelines(lines)
+    print(f"✅ Publisher added to {filepath}")
+
+def add_subscriber_to_node(filepath, topic, msg_type):
+    with open(filepath, "r") as f:
+        lines = f.readlines()
+
     import_stmt = f"from {msg_type.rsplit('.', 1)[0]} import {msg_type.rsplit('.', 1)[-1]}" #
     if ensure_import_exists("".join(lines), import_stmt):
         for i, line in enumerate(lines):
@@ -27,18 +53,91 @@ def add_publisher_to_node(filepath, topic, msg_type):
             lines.insert(i, import_stmt + "\n")
             break
 
-    # Inject into __init__
     for i, line in enumerate(lines):
         if "def __init__(" in line and "self" in line:
             indent = " " * (len(line) - len(line.lstrip()) + 4)
-            publisher_line = f'{indent}self.publisher_ = self.create_publisher({msg_type.rsplit('.', 1)[-1]}, "{topic}", 10)\n'
-            if publisher_line.strip() not in "".join(lines):
-                lines.insert(i + 2, publisher_line)
+            subscriber_line = f'{indent}self.subscriber_ = self.create_subscription({msg_type.rsplit('.', 1)[-1]}, "{topic}", 10)\n'
+            if subscriber_line.strip() not in "".join(lines):
+                add_line = "        # Add 'def listener_callback(self, msg): pass'\n"
+                lines.insert(i + 2, subscriber_line)
+                lines.insert(add_line)
             break
 
     with open(filepath, "w") as f:
         f.writelines(lines)
-    print(f"✅ Publisher added to {filepath}")
+    print(f"✅ Subscriber added to {filepath}")
+    
+
+def add_service_to_node(filepath, service_name, service_type):
+    with open(filepath, "r") as f:
+        lines = f.readlines()
+
+    import_stmt = f"from {service_type.rsplit('.', 1)[0]} import {service_type.rsplit('.', 1)[-1]}" #
+    if ensure_import_exists("".join(lines), import_stmt):
+        for i, line in enumerate(lines):
+            if line.startswith("import") or line.startswith("from"):
+                continue
+            lines.insert(i, import_stmt + "\n")
+            break
+
+    for i, line in enumerate(lines):
+        if "def __init__(" in line and "self" in line:
+            indent = " " * (len(line) - len(line.lstrip()) + 4)
+            service_line = f'{indent}self.srv_ = self.create_service({service_type}, "{service_name}",  self.handle_service)\n'
+            if service_line.strip() not in "".join(lines):
+                add_line = "        # Add 'def handle_service(self, request, response): pass'\n"
+                lines.insert(i + 2, service_line)
+                lines.insert(add_line)
+            break
+
+    with open(filepath, "w") as f:
+        f.writelines(lines)
+    print(f"✅ Service added to {filepath}")
+    
+    
+def add_client_to_node(filepath, service_name, service_type):
+    with open(filepath, "r") as f:
+        lines = f.readlines()
+
+    import_stmt = f"from {service_type.rsplit('.', 1)[0]} import {service_type.rsplit('.', 1)[-1]}" #
+    if ensure_import_exists("".join(lines), import_stmt):
+        for i, line in enumerate(lines):
+            if line.startswith("import") or line.startswith("from"):
+                continue
+            lines.insert(i, import_stmt + "\n")
+            break
+
+    for i, line in enumerate(lines):
+        if "def __init__(" in line and "self" in line:
+            indent = " " * (len(line) - len(line.lstrip()) + 4)
+            client_line = f'{indent}self.srv_ = self.create_service({service_type.rsplit('.', 1)[-1]}, "{service_name}")\n'
+            if client_line.strip() not in "".join(lines):
+                
+                lines.insert(i + 2, client_line)
+            break
+
+    with open(filepath, "w") as f:
+        f.writelines(lines)
+    print(f"✅ Client added to {filepath}")
+    
+    
+def add_timer_to_node(filepath, period=0.5):
+    with open(filepath, "r") as f:
+        lines = f.readlines()
+
+    for i, line in enumerate(lines):
+        if "def __init__(" in line and "self" in line:
+            indent = " " * (len(line) - len(line.lstrip()) + 4)
+            service_line = f'{indent}self.timer_ = self.create_timer({period}, self.timer_callback)\n'
+            if service_line.strip() not in "".join(lines):
+                
+                lines.insert(i + 2, service_line)
+            break
+
+    with open(filepath, "w") as f:
+        f.writelines(lines)
+    print(f"✅ Timer added to {filepath}")
+    
 
 
 def main():

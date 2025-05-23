@@ -5,3 +5,14 @@ Solution: response.choices[0].message.content
               it writes the code it will show error on execution.
 
 Potential Solution: add if empty to give error that topic name cannot be empty, must do this for all edge cases
+
+3. API Connection Error:
+Solution:
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key=os.getenv("OPENAI_API_KEY") #to agent.py file
+
+4. json.decoder.JSONDecodeError: Expecting value: line 1 column 1:
+Potential Solution: This can be because we are passing a integer value to parse, so we will pass string and then
+manually convert to float
