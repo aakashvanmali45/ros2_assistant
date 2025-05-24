@@ -39,12 +39,14 @@ def parse_json_command(command):
 
 def main():
     #print(f"API Key Loaded: {api_key}...")
-    retrieve_context()
+    
 
     user_input = input("Enter Command: ")
     json_command = interpret_text(user_input)
     print(json_command)
     parse_json_command(json_command)
+    retrieve_context()
+
 
 if __name__ == "__main__":
     main()

@@ -142,6 +142,7 @@ def add_timer_to_node(filepath, period=0.5):
         lines = f.readlines()
 
     var_name = generate_unique_variable_name(lines, "timer")
+    callback_func_name = f"{var_name}_callback"
 
     for i, line in enumerate(lines):
         if "def __init__(" in line and "self" in line:
