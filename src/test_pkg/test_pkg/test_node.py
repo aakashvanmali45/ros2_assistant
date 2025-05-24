@@ -7,6 +7,7 @@ from std_msgs.msg import Int64
 class Test_nodeNode(Node):
     def __init__(self):
         super().__init__('test_node')
+        self.timer_1_ = self.create_timer(3.0, self.timer_callback)
         self.timer_ = self.create_timer(2.0, self.timer_callback)
         self.publisher_ = self.create_publisher(Int64, "/number", 10)
         #self.publisher_ = self.create_publisher(String, "/sensor_data", 10)

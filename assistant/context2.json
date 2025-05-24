@@ -91,6 +91,10 @@
     "subscribers": [],
     "clients": [],
     "services": [],
-    "timers": []
+    "timers": [
+      {
+        "period": 2.0
+      }
+    ]
   }
 }
