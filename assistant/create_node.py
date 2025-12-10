@@ -2,8 +2,8 @@ import os
 import re
 
 PACKAGE_NAME = "test_pkg"
-SRC_PATH = os.path.join(os.getcwd(), "src",PACKAGE_NAME, PACKAGE_NAME)
-example_command= "Follow the sample command: make a node named sample_node"
+SRC_PATH = os.path.join(os.getcwd(), "src", PACKAGE_NAME, PACKAGE_NAME)
+example_command = "Follow the sample command: make a node named sample_node"
 print(example_command)
 user_input = input("Enter Command: ")
 
@@ -34,7 +34,8 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-            """)
+            """
+            )
             print(f"Node {node_name}.py created at {node_path}")
 
     else:
@@ -42,4 +43,3 @@ if __name__ == '__main__':
 
 else:
     print("Could not parse node")
-
