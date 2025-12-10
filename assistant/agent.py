@@ -1,25 +1,30 @@
-import subprocess
 import json
-from interpretor import interpret_text
-from code_writer import add_publisher_to_node, add_client_to_node, add_service_to_node, add_subscriber_to_node,add_timer_to_node
-from openai import OpenAI
-
 import os
+import subprocess
 
 from dotenv import load_dotenv
 
-load_dotenv()
-api_key=os.getenv("OPENAI_API_KEY")
+from code_writer import (
+    add_client_to_node,
+    add_publisher_to_node,
+    add_service_to_node,
+    add_subscriber_to_node,
+    add_timer_to_node,
+)
+from interpretor import interpret_text
 
 
 def retrieve_context():
-    subprocess.run(["python3", "assistant/read_context_v2.py"])
-    
+    subprocess.run(["python3", "assistant/read_context_v2.py"], check=True)
+
 
 def parse_json_command(command):
     parsed = json.loads(command)
-    
-    filepath = f"src/test_pkg/test_pkg/{parsed['filename']}"
+
+    # Security: Prevent path traversal by ensuring filename is just a base name
+    # and constructing the full path safely.
+    filename = os.path.basename(parsed["filename"])
+    filepath = os.path.join("src", "test_pkg", "test_pkg", filename)
 
     match parsed["action"]:
         case "add_publisher":
@@ -36,11 +41,7 @@ def parse_json_command(command):
             print("🚫 Unsupported action")
 
 
-
 def main():
-    #print(f"API Key Loaded: {api_key}...")
-    
-
     user_input = input("Enter Command: ")
     json_command = interpret_text(user_input)
     print(json_command)

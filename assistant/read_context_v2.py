@@ -44,48 +44,50 @@ def extract_ros_info(filepath):
             func_name = node.func.attr
 
             def get_safe_arg(index):
-                try:
-                    return ast.literal_eval(node.args[index])
-                except:
-                    return ast.unparse(node.args[index]) if len(node.args) > index else "Unknown"
+                if len(node.args) > index:
+                    arg_node = node.args[index]
+                    try:
+                        # Try to evaluate as a literal (string, number, list, dict, tuple, bool, None)
+                        return ast.literal_eval(arg_node)
+                    except (ValueError, SyntaxError):
+                        # If it's not a literal or evaluation fails, unparse the node
+                        return ast.unparse(arg_node)
+                return "Unknown"
 
             if func_name == "create_publisher":
                 msg_type = get_safe_arg(0)
                 topic = get_safe_arg(1)
-                node_info["publishers"].append({
-                    "topic": topic,
-                    "msg_type": msg_type,
-                })
+                node_info["publishers"].append(
+                    {
+                        "topic": topic,
+                        "msg_type": msg_type,
+                    }
+                )
 
             elif func_name == "create_subscription":
                 msg_type = get_safe_arg(0)
                 topic = get_safe_arg(1)
-                node_info["subscribers"].append({
-                    "topic": topic,
-                    "msg_type": msg_type
-                })
+                node_info["subscribers"].append(
+                    {"topic": topic, "msg_type": msg_type}
+                )
 
             elif func_name == "create_service":
                 service_type = get_safe_arg(0)
                 service_name = get_safe_arg(1)
-                node_info["services"].append({
-                    "service_type": service_type,
-                    "service_name": service_name
-                })
+                node_info["services"].append(
+                    {"service_type": service_type, "service_name": service_name}
+                )
 
             elif func_name == "create_client":
                 client = get_safe_arg(0)
                 service_name = get_safe_arg(1)
-                node_info["clients"].append({
-                    "client": client,
-                    "service_name": service_name
-                })
+                node_info["clients"].append(
+                    {"client": client, "service_name": service_name}
+                )
 
             elif func_name == "create_timer":
                 period = get_safe_arg(0)
-                node_info["timers"].append({
-                    "period": period
-                })
+                node_info["timers"].append({"period": period})
 
     return node_info
 
