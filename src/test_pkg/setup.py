@@ -11,7 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=[],
     zip_safe=True,
     maintainer='aakash',
     maintainer_email='aakashvanmali05@gmail.com',

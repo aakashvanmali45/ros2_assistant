@@ -1,14 +1,14 @@
-from openai import OpenAI
 import os
 
 from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def interpret_text(user_input):
     prompt = f"""
-You are a code assistant for ROS2.
+YouYou are a code assistant for ROS2.
 
 Convert user input into structured JSON commands. Supported actions:
 
